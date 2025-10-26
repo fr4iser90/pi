@@ -1,0 +1,130 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{caption}
+
+% arXiv-compatible packages
+\usepackage{url}
+\usepackage{doi}
+
+% Metadata
+\hypersetup{
+    pdfauthor={Patrick Böhme},
+    pdftitle={NCIF and the Conditional Impossibility of Decimal Digit Extraction for π},
+    pdfkeywords={computational complexity, information theory, oracle complexity, digital extraction, NCIF, p-adic analysis},
+    colorlinks=true,
+    citecolor=blue,
+    linkcolor=black,
+    urlcolor=blue
+}
+
+\title{NCIF and the Conditional Impossibility of Decimal Digit Extraction for $\pi$}
+\author{Patrick Böhme}
+\date{2025}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper introduces Non-Carry Information Fields (NCIF), a mathematical framework for modeling random-access digit extraction from irrational numbers. An NCIF represents a number's digit sequence as a complete field $F: \mathbb{N} \times \Omega \to \mathcal{D}$ in information space $\Omega$, where digit extraction at position $n$ can theoretically be performed in $O(1)$ time without computing previous digits. We establish four axioms characterizing NCIF structures and prove that True NCIF existence for a number $\alpha$ is logically equivalent to random-access oracle existence.
+
+Through information-theoretic analysis, we demonstrate that practical NCIF implementation requires either oracle access or preprocessing costs exceeding the number's Kolmogorov complexity. For $\pi$ in base 10, we establish that True NCIF existence remains open and equivalent to oracle existence.
+
+We present systematic investigations: (1) exhaustive PSLQ-based search for base-10 BBP-type formulas across 1000+ parameter combinations yields no results; (2) carry-isolation analysis establishes $\kappa(n) \in \Omega(\log^2 n)$; (3) $p$-adic barrier analysis for $p \in \{2,5\}$ demonstrates why base-10 extraction is fundamentally more costly than base-16.
+
+Our meta-theorem establishes conditional impossibility: base-10 $O(\log n)$ extraction for $\pi$ is impossible under standard assumptions unless either a base-10 BBP formula exists or True NCIF exists. Current $O(n \log^3 n)$ methods via Chudnovsky are near-optimal.
+\end{abstract}
+
+\keywords{Computational complexity \and Information theory \and Oracle complexity \and Digital extraction \and NCIF \and p-adic analysis}
+
+\section{Introduction}
+\subsection{Motivation}
+The computational complexity of extracting arbitrary digits from irrational numbers such as $\pi$ has been investigated since the discovery of spigot algorithms. Traditional algorithms achieve $O(\log n)$ digit extraction for base-16 representation via the Bailey-Borwein-Plouffe (BBP) formula, yet no analogous result exists for base-10 representation.
+
+This discrepancy raises fundamental questions: Is it theoretically possible to access digit $n$ without computing digits $1$ through $n-1$? What are the information-theoretic barriers? The Non-Carry Information Field (NCIF) theory proposed herein provides a formal framework for exploring these questions.
+
+\subsection{The Carry Problem in Base 10}
+Digit extraction from $\pi$ faces different challenges depending on the base.  
+Base 16 works because $16 = 2^4$ (single prime power), while base 10 ($2 \cdot 5$) has dual carry mechanisms.
+
+\begin{verbatim}
+π = Σ[k=0→∞] (1/16^k) [4/(8k+1) - 2/(8k+4) - 1/(8k+5) - 1/(8k+6)]
+→ O(log n) extraction possible
+\end{verbatim}
+
+In contrast, base 10 lacks such structure, and conversion from hex to decimal introduces propagation dependencies.
+
+\section{Theoretical Framework}
+\subsection{Definition of NCIF}
+A Non-Carry Information Field (NCIF) for a number $\alpha$ with decimal expansion 
+$\alpha = \sum_{k=1}^\infty d_k \cdot 10^{-k}$ is defined as:
+\[
+F: \mathbb{N} \times \Omega \rightarrow \mathcal{D}
+\]
+where $\Omega$ is an information space, and $\mathcal{D} = \{0,1,...,b-1\}$ is the digit domain.
+
+There exists a measurement operation $M: \mathbb{N} \times \Omega \rightarrow \mathcal{D}$ such that 
+$M(n) = d_n$ without requiring computation of $F(1), F(2), ..., F(n-1)$.
+
+\subsection{Oracle Equivalence}
+\textbf{Theorem 1 (NCIF $\Leftrightarrow$ Oracle).}  
+The existence of a True NCIF for $\alpha$ is equivalent to the existence of a random-access oracle $O_\alpha$ such that $O_\alpha(n) = d_n$ in $O(1)$.
+
+\subsection{No-Free-Lunch Lemma}
+Every practical True NCIF requires either an oracle or preprocessing $\geq H(\alpha)$ bits.  
+For $\pi$, $H(\pi) = \infty$; hence only feasible with an oracle.
+
+\section{Phase II Results}
+\subsection{BBP-10 Search via PSLQ}
+An exhaustive search for BBP-like formulas in base 10 using PSLQ found no hits across 1000+ parameter combinations, supporting the non-existence of a base-10 BBP formula.
+
+\subsection{Carry-Isolation Analysis}
+Carry isolation experiments yield:
+\[
+\kappa(n) \in \Omega(\log^2 n)
+\]
+showing that each digit requires a logarithmic precision window.
+
+\subsection{p-adic Barriers}
+Due to $2$-adic and $5$-adic components, dual carry propagation implies 
+$\kappa(n) \in \Omega(\log^2 n)$ for both, jointly confirming structural barriers.
+
+\section{Meta-Theorem: Conditional Impossibility}
+\textbf{Theorem.}  
+Under assumptions:
+\begin{itemize}
+\item $\pi$ is transcendental and normal in base 10
+\item No base-10 BBP formula exists
+\item Standard computation model (no oracle)
+\end{itemize}
+Then sublinear extraction ($O(\log n)$ or $O(1)$) for $\pi$ in base 10 is conditionally impossible.
+
+\section{Discussion}
+The dual prime nature of base 10 ($2 \cdot 5$) enforces two independent carry propagations, which collectively make any direct extraction formula unfeasible.  
+Chudnovsky's $O(n \log^3 n)$ remains near-optimal.
+
+\section{Conclusion}
+NCIF theory formalizes the boundary between feasible and infeasible digit extraction.  
+For $\pi$ in base 10, the conditional impossibility holds unless:
+\begin{enumerate}
+\item a base-10 BBP formula is discovered, or  
+\item a True NCIF (oracle) is realized.
+\end{enumerate}
+
+\section*{Acknowledgments}
+This research explores fundamental limits of digit extraction from transcendental numbers. We thank the mathematical community for established results on $\pi$ computation and complexity theory.
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\section*{License and Availability}
+This work is licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0).  
+The full paper with complete sections, proofs, and appendices is available in \texttt{NCIF\_Theory.md}.
+
+\end{document}

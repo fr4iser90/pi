@@ -1,0 +1,17 @@
+# Python dependencies for reproducing results from:
+# "NCIF and the Conditional Impossibility of Decimal Digit Extraction for π"
+# by Patrick Böhme (2025)
+#
+# Core dependencies only (as used in phase2_investigation1_lis_pslq.py)
+
+# High-precision arithmetic (required for PSLQ search)
+mpmath>=1.3.0
+
+# Numerical computing
+numpy>=1.24.0
+
+# Symbolic computation (optional, for future extensions)
+sympy>=1.12
+
+# For faster arbitrary precision (optional but recommended)
+gmpy2>=2.1.5
