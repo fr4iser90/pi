@@ -562,7 +562,3 @@ This research explores fundamental limits of digit extraction from transcendenta
 ---
 
 **End of Paper**
-
-*Correspondence to: Huan Shen*  
-*Keywords: Computational complexity, Information theory, Digital extraction, NCIF, p-adic analysis*  
-*Subject Classification: 68Q15, 11Y60, 11J04*
